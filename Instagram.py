@@ -78,7 +78,7 @@ class instagram:
 
 
     def get_hashtag_posts(self, hashtag_name):
-        json = get(f'https://www.instagram.com/explore/tags/{hashtag_name}?__a=1', headers=self.web_headers).json()
+        json = get(f'https://www.instagram.com/explore/tags/{hashtag_name}?__a=1', headers=self.web_headers, cookies=self.cookies).json()
         posts = []
         for i in json['graphql']['hashtag']['edge_hashtag_to_media']['edges']:
             i = i['node']
