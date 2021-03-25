@@ -39,7 +39,7 @@ class instagram:
 
 
     def get_stories(self, user_id): # Get All Stories 
-        json = get( f'https://i.instagram.com/api/v1/feed/reels_media/?reel_ids={user_id}' ,cookies = self.cookies, headers = self.mobile_headers ).json()
+        json = get( f'https://i.instagram.com/api/v1/feed/reels_media/?reel_ids={user_id}' ,cookies = self.cookies, headers = self.web_headers ).json()
         res = []
         for story in json['reels_media'][0]['items']:
                       
