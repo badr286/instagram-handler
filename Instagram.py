@@ -65,7 +65,7 @@ class instagram:
         user_id = self.get_user_id(username)
         return self.unfollow_by_user_id(user_id)
 
-    def get_followers(self, user_id):
+    def get_followers(self, user_id, sleeping_time):
         print('Results Will Be in self.followers_result')
         prefix = 'https://www.instagram.com/graphql/query/?'
         followers_count = self.get_user_info_by_user_id(user_id)['follower_count']
@@ -73,19 +73,18 @@ class instagram:
         variables={"id":user_id,"include_reel":'true',"fetch_mutual":'true',"first":'100'}
         url = prefix+'query_hash='+query_hash+'&variables='+str(variables).replace("'",'"')
         json = get(url, cookies=self.cookies, headers=self.web_headers).json()['data']['user']['edge_followed_by']
-        self.followers_result = [ user['node'] for user in json['edges'] ]
+        followers_result = [ user['node'] for user in json['edges'] ]
         still_more = json['page_info']['has_next_page']
         while still_more:
-            print( f'{len(self.followers_result)}/{followers_count}' )
-            sleep(0)
+            sleep(sleeping_time)
             variables['after'] = json['page_info']['end_cursor']
             url = prefix+'query_hash='+query_hash+'&variables='+str(variables).replace("'",'"')
             json = get(url, cookies=self.cookies,headers=self.web_headers).json()['data']['user']['edge_followed_by']
             still_more = json['page_info']['has_next_page']
             users = [ user['node'] for user in json['edges'] ]
             for user in users:
-                self.followers_result.append(user)
-        return self.followers_result
+                followers_result.append(user)
+        return followers_result
 
     def get_followings(self, user_id, sleeping_time):
         prefix = 'https://www.instagram.com/graphql/query/?'
