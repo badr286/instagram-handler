@@ -3,10 +3,6 @@ from uuid import uuid4
 from time import sleep, strftime, time
 from os import system
 
-def two_lists(a,b):
-    for element in b:
-        a.append(element)
-
 class instagram:
 
     def __init__(self, user, password):
